@@ -11,7 +11,7 @@ The main goal of this repository is to present a modular approach to software de
 
 ### What are the benefits of modularity?
 If done correctly, it can improve maintainability of the system:
-- code coupling is decreased, because the components interact with eachother only through the public interfaces (we can change the internals of the module without breaking the collaborators)
+- code coupling is decreased, because components interact with eachother only through the public interfaces (we can change the internals of the module without breaking the collaborators)
 - it is easier to test different parts of the system in isolation thanks to the explicit bounderies
 
 ### What about the cons?
@@ -22,10 +22,10 @@ Meeting system allows users to organize groups and schedule meetings for the gro
 
 To organize a group, users have to submit a proposal, that will be reviewed by an administrator. Every user can have at most 3 active groups. A group organizer can disband the group, unless it has scheduled meetings.
 
-Meetings should have a specific name, date and number of spots. Meeting sign-on may require a fee. If there are no free spots, users should have the ability to sign on a waiting list. A meeting organiser can cancel the meeting before its date. The meeting attendees should be notified about the meeting cancellation.
+Group members can schedule meetings that other members can attend. A meeting should have specific name, date and number of spots. Meeting sign-on may require a fee. If there are no free spots, users should have the ability to sign on a waiting list. A meeting organiser can cancel the meeting before its date. If the meeting is cancelled, the meeting attendees should be notified about the meeting cancellation. If sign-on required a fee, they should also get their money back.
 
 ### Main processes and rules
-group organizing proccess:
+group organizing process:
 - a user has to submit a new group proposal
 - proposal has to be reviewed by an administrator
 - the administrator can either accept or reject the proposal
@@ -70,7 +70,7 @@ meeting cancellation:
 - users from the waiting list should also be notified
 
 waiting list:
-- if scheduled meeting doesn't have any free spots, users can sign on a waiting list
+- if scheduled meeting doesn't have any free spots, users can sign on a waiting list before the meeting date
 - if some user signs off from the meeting, then someone from the waiting list should be signed on
 - a user who has been signed on from the waiting list should be notified
 
@@ -276,3 +276,4 @@ public class MeetingsArchitectureTest extends ArchitectureTestBase {
 - no frontend
 - no authorization/authentication
 - naive database implementation (h2)
+- the process of depositing money by users is not implemented
