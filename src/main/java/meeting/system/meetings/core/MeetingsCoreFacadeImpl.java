@@ -21,7 +21,7 @@ import static java.util.function.Function.identity;
 import static meeting.system.meetings.core.dto.CancelMeetingFailure.MEETING_DOESNT_EXIST;
 import static meeting.system.meetings.core.dto.HoldMeetingFailure.CANNOT_HOLD_MEETING_BEFORE_MEETING_DATE;
 import static meeting.system.meetings.core.dto.HoldMeetingFailure.MEETING_DOES_NOT_EXIST;
-import static meeting.system.meetings.core.dto.SignOnForMeetingFailure.USER_IS_NOT_GROUP_MEMBER_NOR_GROUP_ORGANIZER;
+import static meeting.system.meetings.core.dto.SignOnForMeetingFailure.USER_IS_NOT_GROUP_MEMBER;
 
 @AllArgsConstructor
 @Slf4j
@@ -98,8 +98,8 @@ class MeetingsCoreFacadeImpl implements MeetingsCoreFacade {
 
     private Option<SignOnForMeetingFailure> signOn(MeetingEntity meeting, UserId userId) {
         var meetingGroupId = meeting.getMeetingGroupId();
-        if (!isGroupMemberOrOrganizer(userId, meetingGroupId))
-            return of(USER_IS_NOT_GROUP_MEMBER_NOR_GROUP_ORGANIZER);
+        if (!isGroupMember(userId, meetingGroupId))
+            return of(USER_IS_NOT_GROUP_MEMBER);
         if (meeting.getFee().isDefined())
             return signOnAndCharge(meeting, userId, meeting.getFee().get());
         else
@@ -174,8 +174,7 @@ class MeetingsCoreFacadeImpl implements MeetingsCoreFacade {
                 .map(MeetingDetails::meetingGroupId);
     }
 
-    private boolean isGroupMemberOrOrganizer(UserId userId, MeetingGroupId meetingGroupId) {
-        return meetingGroups.isGroupMember(userId, meetingGroupId) ||
-                meetingGroups.isGroupOrganizer(userId, meetingGroupId);
+    private boolean isGroupMember(UserId userId, MeetingGroupId meetingGroupId) {
+        return meetingGroups.isGroupMember(userId, meetingGroupId);
     }
 }

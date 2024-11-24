@@ -43,7 +43,7 @@ public class SignOnForFreeMeetingFailurePaths extends MeetingsCoreTestSetup {
 //        when
         var result = meetingsCoreFacade.signOnForMeeting(groupMemberId, groupMeetingId);
 //        then
-        assertEquals(Option.of(USER_IS_NOT_GROUP_MEMBER_NOR_GROUP_ORGANIZER), result);
+        assertEquals(Option.of(USER_IS_NOT_GROUP_MEMBER), result);
     }
 
     @Test
@@ -64,6 +64,16 @@ public class SignOnForFreeMeetingFailurePaths extends MeetingsCoreTestSetup {
         var result = meetingsCoreFacade.signOnForMeeting(groupMemberId, groupMeetingId);
 //        then
         assertEquals(Option.of(USER_ALREADY_SIGNED_ON), result);
+    }
+
+    @Test
+    public void groupOrganizerShouldFailToSignOnForTheMeeting() {
+//        given
+        groupMemberSignedOnToMeeting(groupMemberId, groupMeetingId, meetingGroupId);
+//        when
+        var result = meetingsCoreFacade.signOnForMeeting(meetingOrganizerId, groupMeetingId);
+//        then
+        assertEquals(Option.of(MEETING_ORGANIZER_CANNOT_SIGN_ON), result);
     }
 
     private void scheduledMeetingHasNoFreeSlots() {

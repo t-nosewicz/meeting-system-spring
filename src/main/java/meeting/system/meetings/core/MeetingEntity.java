@@ -29,6 +29,7 @@ import static jakarta.persistence.FetchType.EAGER;
 import static java.util.stream.Collectors.toSet;
 import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
+import static meeting.system.meetings.core.dto.SignOnForMeetingFailure.MEETING_ORGANIZER_CANNOT_SIGN_ON;
 
 @AllArgsConstructor(access = PRIVATE)
 @NoArgsConstructor(access = PROTECTED)
@@ -67,6 +68,8 @@ class MeetingEntity extends BaseEntity {
     }
 
     Option<SignOnForMeetingFailure> signOn(UserId userId) {
+        if (meetingOrganizerId.equals(userId.id()))
+            return Option.of(MEETING_ORGANIZER_CANNOT_SIGN_ON);
         if (this.contains(userId))
             return Option.of(SignOnForMeetingFailure.USER_ALREADY_SIGNED_ON);
         if (!hasFreeSpots())

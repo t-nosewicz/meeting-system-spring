@@ -15,7 +15,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import static io.vavr.control.Option.of;
 import static meeting.system.meetings.core.dto.SignOnForMeetingFailure.NO_FREE_ATTENDEE_SLOTS;
-import static meeting.system.meetings.core.dto.SignOnForMeetingFailure.USER_IS_NOT_GROUP_MEMBER_NOR_GROUP_ORGANIZER;
+import static meeting.system.meetings.core.dto.SignOnForMeetingFailure.USER_IS_NOT_GROUP_MEMBER;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -44,7 +44,7 @@ public class WaitingListTestSetup {
     }
 
     protected void everyoneFailsToSignOnForMeeting() {
-        when(meetingsCoreFacade.signOnForMeeting(any(UserId.class), any(GroupMeetingId.class))).thenReturn(of(USER_IS_NOT_GROUP_MEMBER_NOR_GROUP_ORGANIZER));
+        when(meetingsCoreFacade.signOnForMeeting(any(UserId.class), any(GroupMeetingId.class))).thenReturn(of(USER_IS_NOT_GROUP_MEMBER));
     }
 
     protected void meetingHasNoFreeSlots() {

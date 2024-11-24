@@ -44,7 +44,7 @@ group leaving:
 - group organizers cannot leave their own groups
 
 group disbanding:
-- only the group organizer can disband the group
+- only the group organizer can disband the groupUSER_ALREADY_SIGNED_ON
 - the group cannot be dibanded if there are meetings scheduled for that group
 
 meeting scheduling:
