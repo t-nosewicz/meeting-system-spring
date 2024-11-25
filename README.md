@@ -3,7 +3,7 @@
 The main goal of this repository is to present a modular approach to software design.
 
 ### What is a module?
-- it is a part of the system with explicit boundaries, responsible for a proccess or group of closely ralated processes
+- it is a part of the system with explicit boundaries, responsible for a process or group of closely related processes
 - interaction with the module is allowed only through its public interface(no access to the internal implementation details: database tables, entities, repositories, submodules, etc.)
 - every module has its own layers (web, domain, database access)
 
@@ -11,11 +11,11 @@ The main goal of this repository is to present a modular approach to software de
 
 ### What are the benefits of modularity?
 If done correctly, it can improve maintainability of the system:
-- code coupling is decreased, because components interact with eachother only through the public interfaces (we can change the internals of the module without breaking the collaborators)
-- it is easier to test different parts of the system in isolation thanks to the explicit bounderies
+- code coupling is decreased, because components interact with each other only through the public interfaces (we can change the internals of the module without breaking the collaborators)
+- it is easier to test different parts of the system in isolation thanks to the explicit boundaries
 
 ### What about the cons?
-It can be difficult to create complex views or reports because the database tables are encapsulated and we can't(or at least shouldn't) run Sql statements across the entire database schema.
+It can be difficult to create complex views or reports because the database tables are encapsulated, and we can't(or at least shouldn't) run Sql statements across the entire database schema.
 
 # Domain description
 Meeting system allows users to organize groups and schedule meetings for the group members.
@@ -44,8 +44,8 @@ group leaving:
 - group organizers cannot leave their own groups
 
 group disbanding:
-- only the group organizer can disband the groupUSER_ALREADY_SIGNED_ON
-- the group cannot be dibanded if there are meetings scheduled for that group
+- only the group organizer can disband the group
+- the group cannot be disbanded if there are meetings scheduled for that group
 
 meeting scheduling:
 - only the group members can schedule the meetings(both regular group members and group organizers)
@@ -81,7 +81,7 @@ waiting list:
 
 ![users roles and their interactions with the system](https://github.com/user-attachments/assets/43c39c7e-6b83-4807-b447-3b199ef38916)
 
-### Segregating proccesses into the modules
+### Segregating processes into the modules
 Processes that appear to be closely related should be put together:
 
 ![users and modules](https://github.com/user-attachments/assets/c10c706a-f6cf-4f21-a5cf-352595374449)
@@ -93,7 +93,7 @@ Now we should describe interactions between the components:
 
 Things that should bring our attention:
 - circular dependencies
-- to much communication between the modules
+- too much communication between the modules
 
 'meetings' and 'waiting list': both issues are present. These two components should be wrapped with a parent module that restricts direct access to them and is responsible for their collaboration.
 
@@ -103,7 +103,7 @@ Things that should bring our attention:
 
 ![3 3 interactions between modules](https://github.com/user-attachments/assets/74d7b249-3dbf-478a-aa60-98b81aca2f7d)
 
-'groups' and 'group proposals': no circular depenency but too much communication. We can merge them. Later on the unit tests will show if that was a good decision(if unit tests of a module are too complicated, it usually means that the module is too big and it should be split).
+'groups' and 'group proposals': no circular dependency but too much communication. We can merge them. Later on the unit tests will show if that was a good decision(if unit tests of a module are too complicated, it usually means that the module is too big, and it should be split).
 
 ![3 4 interactions between modules](https://github.com/user-attachments/assets/e5e7ea7e-2ab3-47bc-a524-ee41760e495d)
 
@@ -129,7 +129,7 @@ Structure of the sample module: 'meeting groups'
 ![meeting groups module package structure](https://github.com/user-attachments/assets/f6735167-510c-4981-bc4d-efa18b30b0b9)
 
 As we can see, the only public classes in the module are:
-- 'MeetingGroupsFacade' interface containig all the commands
+- 'MeetingGroupsFacade' interface containing all the commands
 - 'MeetingGroupsConfiguration' class that creates the instance of the facade
 - 'MeetingGroupsRoles' separate interface used by other modules
 - classes accepted and returned by the facade in 'dto' package
@@ -232,10 +232,10 @@ public class MeetingGroupsConfiguration {
 ```
 
 ### Integration testing
-Integration tests of a module are done in isolation from the other modules but they include all the layers(web, domain, database). Integration tests check only few main scenarios.
+Integration tests of a module are done in isolation from the other modules, but they include all the layers(web, domain, database). Integration tests check only few main scenarios.
 
 ### Architecture tests
-Architecture tests verify that architectural and dependency rules that cannot be checked at compile time are followed, e.g. child modules in 'meetings' component should only be accesed by their parent module.
+Architecture tests verify that architectural and dependency rules that cannot be checked at compile time are followed, e.g. child modules in 'meetings' component should only be accessed by their parent module.
 
 'meetings' package structure:
 
