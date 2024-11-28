@@ -135,15 +135,6 @@ As we can see, the only public classes in the module are:
 - classes accepted and returned by the facade in 'dto' package
 - controllers in 'http' package (have to be public for integration testing purposes)
 
-### Database access
-Domain layer of the module accesses the database through the repositories. Implementation is provided by extending the interfaces from Spring Data Jpa.
-
-```java
-interface GroupRepository extends CrudRepository<GroupEntity, Long> {
-
-    Collection<GroupEntity> findByGroupOrganizerId(Long groupOrganizerId);
-```
-
 # Testing
 
 Every module has its own test package.
@@ -158,11 +149,11 @@ Tests are split into 3 categories:
 ### Unit testing
 Modules are unit tested in isolation from other modules, web layer and database.
 
-#### How to isolate module from other modules?
-Use mocks and stubs as references to other modules.
+#### How to isolate the module from other modules?
+Mocks/stubs.
 
 #### How to isolate module from the web layer?
-Use the facade of the module instead of http calls.
+In tests call a facade of the module instead of making http calls.
 
 #### How to isolate modules from the database?
 Create a generic implementation of the CrudRepository interface from Spring Data Jpa that stores entities in a hash map.
@@ -185,7 +176,7 @@ public class InMemoryCrudRepository<E, ID> implements CrudRepository<E, ID> {
 ...
 ```
 
-In a specific repository interface add the specific in-memory implementation.
+In a specific repository interface add an in-memory implementation.
 
 ```java
 interface GroupRepository extends CrudRepository<GroupEntity, Long> {
@@ -277,3 +268,4 @@ public class MeetingsArchitectureTest extends ArchitectureTestBase {
 - no authorization/authentication
 - naive database implementation (h2)
 - the process of depositing money by users is not implemented
+- notifications are not implemented
