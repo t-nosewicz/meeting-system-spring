@@ -133,7 +133,7 @@ As we can see, the only public classes in the module are:
 - 'MeetingGroupsConfiguration' class that creates the instance of the facade
 - 'MeetingGroupsRoles' separate interface used by other modules
 - classes accepted and returned by the facade in 'dto' package
-- controllers in 'http' package (have to be public for integration testing purposes)
+- controllers in 'http' package (has to be public for integration testing purposes)
 
 # Testing
 
