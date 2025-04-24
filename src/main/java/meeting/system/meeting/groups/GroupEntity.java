@@ -67,8 +67,10 @@ class GroupEntity extends BaseEntity {
     }
 
     LeaveGroupResult leave(UserId userId) {
+        if (groupOrganizerId.equals(userId.id()))
+            return LeaveGroupResult.Failure.GROUP_ORGANIZER_CANNOT_LEAVE_THE_GROUP;
         return findGroupMemberById(userId)
-                .toEither(LeaveGroupResult.Failure.USER_IS_NOT_GROUP_MEMBER)
+                .toEither(LeaveGroupResult.Failure.USER_IS_NOT_A_REGULAR_GROUP_MEMBER)
                 .peek(groupMembers::remove)
                 .map(e -> new LeaveGroupResult.Success())
                 .fold(identity(), identity());

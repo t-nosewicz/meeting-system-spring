@@ -2,17 +2,18 @@ package test.meeting.system.groups.unit;
 
 import meeting.system.commons.dto.UserId;
 import meeting.system.meeting.groups.dto.LeaveGroupResult.Success;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static meeting.system.meeting.groups.dto.LeaveGroupResult.Failure.GROUP_DOES_NOT_EXIST;
-import static meeting.system.meeting.groups.dto.LeaveGroupResult.Failure.USER_IS_NOT_GROUP_MEMBER;
-import static org.junit.jupiter.api.Assertions.*;
+import static meeting.system.meeting.groups.dto.LeaveGroupResult.Failure.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class LeavingGroup extends TestSetup {
     private final UserId user = new UserId(1L);
 
     @Test
-    public void groupMemberShouldFailToLeaveNotExistingGroup() {
+    @DisplayName("user should fail to leave non-existent group")
+    public void fail1() {
 //        given
         var meetingGroupId = groupWasCreated();
 //        and
@@ -24,7 +25,19 @@ public class LeavingGroup extends TestSetup {
     }
 
     @Test
-    public void userShouldFailToLeaveTheSameGroupTwice() {
+    @DisplayName("user, that never joined the group, should fail to leave it")
+    public void fail2() {
+//        given
+        var meetingGroupId = groupWasCreated();
+//        when
+        var result = meetingGroupsFacade.leaveGroup(user, meetingGroupId);
+//        then
+        assertEquals(USER_IS_NOT_A_REGULAR_GROUP_MEMBER, result);
+    }
+
+    @Test
+    @DisplayName("user, that is a regular group member, should fail to leave the same group twice")
+    public void fail3() {
 //        given
         var meetingGroupId = groupWasCreated();
 //        and
@@ -34,7 +47,18 @@ public class LeavingGroup extends TestSetup {
 //        when
         var result = meetingGroupsFacade.leaveGroup(user, meetingGroupId);
 //        then
-        assertEquals(USER_IS_NOT_GROUP_MEMBER, result);
+        assertEquals(USER_IS_NOT_A_REGULAR_GROUP_MEMBER, result);
+    }
+
+    @Test
+    @DisplayName("user, that is a group organizer, should fail to leave the group")
+    public void fail4() {
+//        given
+        var meetingGroupId = groupWasCreated(user);
+//        when
+        var result = meetingGroupsFacade.leaveGroup(user, meetingGroupId);
+//        then
+        assertEquals(GROUP_ORGANIZER_CANNOT_LEAVE_THE_GROUP, result);
     }
 
     @Test

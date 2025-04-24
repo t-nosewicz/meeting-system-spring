@@ -2,6 +2,7 @@ package test.meeting.system.groups.unit;
 
 import meeting.system.commons.dto.UserId;
 import meeting.system.meeting.groups.dto.DisbandGroupResult.Success;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static meeting.system.meeting.groups.dto.DisbandGroupResult.Failure.GROUP_DOESNT_EXIST;
@@ -12,7 +13,8 @@ public class DisbandingGroup extends TestSetup {
     private final UserId groupOrganizer = new UserId(1L);
 
     @Test
-    public void shouldFailToDisbandSameGroupTwice() {
+    @DisplayName("disbanding the same group twice should fail")
+    public void fail1() {
 //        given
         var meetingGroupId = groupWasCreated(groupOrganizer);
 //        and
@@ -24,7 +26,8 @@ public class DisbandingGroup extends TestSetup {
     }
 
     @Test
-    public void shouldFailBecauseUserIsNotGroupOrganizer() {
+    @DisplayName("user, that is not a group organizer, should fail to disband the group")
+    public void fail2() {
 //        given
         var meetingGroupId = groupWasCreated(groupOrganizer);
 //        when
@@ -34,7 +37,7 @@ public class DisbandingGroup extends TestSetup {
     }
 
     @Test
-    public void successfulGroupDisbandment() {
+    public void success() {
 //        given
         var meetingGroupId = groupWasCreated(groupOrganizer);
 //        when

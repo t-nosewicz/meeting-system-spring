@@ -1,6 +1,7 @@
 package test.meeting.system.groups.unit;
 
 import meeting.system.commons.dto.UserId;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static meeting.system.meeting.groups.dto.AcceptProposalResult.Failure.*;
@@ -11,7 +12,8 @@ public class AcceptingNewGroupProposal extends TestSetup {
     private final UserId groupOrganizer = randomUserId();
 
     @Test
-    public void shouldFailToAcceptProposalThatWasAlreadyAccepted() {
+    @DisplayName("accepting the same proposal twice should fail")
+    public void fail1() {
 //        given
         var proposalId = newGroupProposalGotSubmitted();
 //        and
@@ -23,7 +25,8 @@ public class AcceptingNewGroupProposal extends TestSetup {
     }
 
     @Test
-    public void shouldFailAcceptProposalThatAlreadyGotRejected() {
+    @DisplayName("accepting rejected proposal should fail")
+    public void fail2() {
 //        given
         var proposalId = newGroupProposalGotSubmitted();
 //        and
@@ -35,7 +38,8 @@ public class AcceptingNewGroupProposal extends TestSetup {
     }
 
     @Test
-    public void shouldFailToAcceptProposalThatDoesNotExist() {
+    @DisplayName("accepting non-existing proposal should fail")
+    public void fail3() {
 //        when
         var result = meetingGroupsFacade.acceptProposal(administrator, randomProposalId());
 //        then
