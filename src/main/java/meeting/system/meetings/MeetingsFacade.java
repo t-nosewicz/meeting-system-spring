@@ -14,6 +14,9 @@ import meeting.system.meetings.waiting.list.dto.SignOnWaitListFailure;
 import meeting.system.notifications.NotificationsFacade;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.util.Set;
+
 @AllArgsConstructor
 public class MeetingsFacade {
     private final MeetingsCoreFacade meetingsCoreFacade;
@@ -38,15 +41,15 @@ public class MeetingsFacade {
     public Option<CancelMeetingFailure> cancelMeeting(UserId userId, GroupMeetingId groupMeetingId) {
         return meetingsCoreFacade
                 .cancelMeeting(userId, groupMeetingId)
-                .peek(meetingGotCancelled -> {
-                    var meetingName = meetingGotCancelled.meetingName();
-                    var meetingDate = meetingGotCancelled.meetingDate();
-                    var meetingAttendees = meetingGotCancelled.meetingAttendees();
-                    meetingsNotifications.notifyAboutMeetingCancellation(meetingName, meetingDate, meetingAttendees);
-                    waitingListFacade
-                            .removeWaitingList(groupMeetingId)
-                            .peek(waitingListRemoved -> meetingsNotifications.notifyAboutMeetingCancellation(meetingName, meetingDate, waitingListRemoved.waitingListMembers()));
-                }).swap().toOption();
+                .peek(cancelled -> meetingGotCancelled(groupMeetingId, cancelled.meetingName(), cancelled.meetingDate(), cancelled.meetingAttendees()))
+                .swap().toOption();
+    }
+
+    private void meetingGotCancelled(GroupMeetingId groupMeetingId, String meetingName, LocalDate meetingDate, Set<UserId> meetingAttendees) {
+        meetingsNotifications.notifyAboutMeetingCancellation(meetingName, meetingDate, meetingAttendees);
+        waitingListFacade
+                .removeWaitingList(groupMeetingId)
+                .peek(waitingListRemoved -> meetingsNotifications.notifyAboutMeetingCancellation(meetingName, meetingDate, waitingListRemoved.waitingListMembers()));
     }
 
     @Transactional

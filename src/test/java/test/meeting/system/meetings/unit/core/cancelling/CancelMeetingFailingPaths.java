@@ -3,6 +3,7 @@ package test.meeting.system.meetings.unit.core.cancelling;
 import meeting.system.commons.dto.GroupMeetingId;
 import meeting.system.commons.dto.MeetingGroupId;
 import meeting.system.commons.dto.UserId;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import test.meeting.system.meetings.unit.core.MeetingsCoreTestSetup;
 
@@ -19,7 +20,8 @@ public class CancelMeetingFailingPaths extends MeetingsCoreTestSetup {
     private final MeetingGroupId groupId = new MeetingGroupId(2L);
 
     @Test
-    public void meetingOrganizerShouldFailToCancelTheSameMeetingTwice() {
+    @DisplayName("cancelling non-existing meeting should fail")
+    public void test1() {
 //        given
         var meetingId = meetingWasScheduled(meetingOrganizerId, groupId);
 //        and
@@ -31,7 +33,8 @@ public class CancelMeetingFailingPaths extends MeetingsCoreTestSetup {
     }
 
     @Test
-    public void userThatIsNotMeetingOrganizerShouldFailToCancelMeeting() {
+    @DisplayName("cancelling meeting should fail if user is not group organizer")
+    public void test2() {
 //        given
         var meetingId = meetingWasScheduled(meetingOrganizerId, groupId);
 //        when
@@ -41,7 +44,8 @@ public class CancelMeetingFailingPaths extends MeetingsCoreTestSetup {
     }
 
     @Test
-    public void userShouldFailToCancelMeetingAfterMeetingDate() {
+    @DisplayName("cancelling meeting after its date should fail")
+    public void test3() {
 //        given
         var meetingDate = LocalDate.now().plusDays(4);
         var meetingId = meetingWasScheduled(meetingOrganizerId, groupId, meetingDate);
