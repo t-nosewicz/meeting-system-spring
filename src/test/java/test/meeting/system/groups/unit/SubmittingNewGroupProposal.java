@@ -1,6 +1,7 @@
 package test.meeting.system.groups.unit;
 
 import meeting.system.commons.dto.UserId;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static meeting.system.meeting.groups.dto.SubmitProposalResult.Failure.*;
@@ -8,8 +9,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SubmittingNewGroupProposal extends TestSetup {
     private final UserId groupOrganizer = new UserId(1L);
+
     @Test
-    public void submittingProposalByGroupOrganizerWith3GroupsShouldFail() {
+    @DisplayName("submitting a proposal by a group organizer with 3 groups should fail")
+    public void fail1() {
 //        given
         groupWasCreated(groupOrganizer);
         groupWasCreated(groupOrganizer);
@@ -21,7 +24,8 @@ public class SubmittingNewGroupProposal extends TestSetup {
     }
 
     @Test
-    public void submittingProposalByGroupOrganizerWith2GroupsAnd1WaitingProposalShouldFail() {
+    @DisplayName("submitting a proposal by a group organizer with 2 groups and 1 waiting proposal should fail")
+    public void fail2() {
 //        given
         groupWasCreated(groupOrganizer);
         groupWasCreated(groupOrganizer);
@@ -34,7 +38,8 @@ public class SubmittingNewGroupProposal extends TestSetup {
     }
 
     @Test
-    public void submittingProposalWithGroupNameOccupiedByExistingMeetingGroupShouldFail() {
+    @DisplayName("submitting a proposal with a name, that is already used in existing group, should fail")
+    public void fail3() {
 //        given
         var groupNameUsedTwice = randomGroupName();
         groupWasCreated(groupOrganizer, groupNameUsedTwice);
@@ -45,7 +50,8 @@ public class SubmittingNewGroupProposal extends TestSetup {
     }
 
     @Test
-    public void submittingProposalWithNameUsedInOtherProposalShouldFail() {
+    @DisplayName("submitting a proposal with a name, that is already used in other proposal, should fail")
+    public void fail4() {
 //        given
         String usedName = randomGroupName();
         newGroupProposalGotSubmitted(groupOrganizer, proposalWithName(usedName));
@@ -56,7 +62,7 @@ public class SubmittingNewGroupProposal extends TestSetup {
     }
 
     @Test
-    public void submittingProposalByGroupOrganizerWithLessThan3GroupsAndProposalsCombinedShouldSucceed() {
+    public void success() {
 //        given
         groupWasCreated(groupOrganizer);
 //        and

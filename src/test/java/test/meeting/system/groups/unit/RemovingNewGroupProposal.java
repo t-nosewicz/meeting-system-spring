@@ -2,6 +2,7 @@ package test.meeting.system.groups.unit;
 
 
 import meeting.system.commons.dto.UserId;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static meeting.system.meeting.groups.dto.RemoveProposalResult.Failure.*;
@@ -12,15 +13,17 @@ public class RemovingNewGroupProposal extends TestSetup {
     private final UserId administrator = new UserId(2L);
 
     @Test
-    public void shouldFailToRemoveNotExistingProposal() {
+    @DisplayName("administrator should fail to remove non-existent proposal")
+    public void fail1() {
 //        when
-        var result = meetingGroupsFacade.removeWaitingProposal(randomUserId(), randomProposalId());
+        var result = meetingGroupsFacade.removeWaitingProposal(proposalAuthor, randomProposalId());
 //        then
         assertEquals(PROPOSAL_DOES_NOT_EXIST, result);
     }
 
     @Test
-    public void userThatIsNotProposalAuthorShouldFailToRemoveWaitingProposal() {
+    @DisplayName("user, that is not a proposal author, should fail to remove the proposal")
+    public void fail2() {
 //        given
         var proposalId = newGroupProposalGotSubmitted(proposalAuthor);
 //        when
@@ -30,6 +33,7 @@ public class RemovingNewGroupProposal extends TestSetup {
     }
 
     @Test
+    @DisplayName("user, that is a proposal author, should fail to remove accepted proposal")
     public void shouldFailToRemoveAcceptedProposal() {
 //        given
         var proposalId = newGroupProposalGotSubmitted(proposalAuthor);
@@ -42,6 +46,7 @@ public class RemovingNewGroupProposal extends TestSetup {
     }
 
     @Test
+    @DisplayName("user, that is a proposal author, should fail to remove rejected proposal")
     public void shouldFailToRemoveRejectedProposal() {
 //        given
         var proposalId = newGroupProposalGotSubmitted(proposalAuthor);
@@ -54,7 +59,7 @@ public class RemovingNewGroupProposal extends TestSetup {
     }
 
     @Test
-    public void shouldSuccessfullyRemoveWaitingProposal() {
+    public void success() {
 //        given
         var proposalId = newGroupProposalGotSubmitted(proposalAuthor);
 //        when
